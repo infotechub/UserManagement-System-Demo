@@ -1,7 +1,10 @@
-﻿namespace UserManagement_System_Demo.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace UserManagement_System_Demo.Models
 {
     public class Base
     {
+        
         public int Id { get; set; }
 
         public DateTime? DateCreated { get; set; }

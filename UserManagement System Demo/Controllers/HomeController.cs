@@ -15,6 +15,7 @@ namespace UserManagement_System_Demo.Controllers
 
         public IActionResult Index()
         {
+            //var fullname = "Akinbamidele";
             return View();
         }
 
