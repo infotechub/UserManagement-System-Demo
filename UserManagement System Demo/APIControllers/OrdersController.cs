@@ -11,7 +11,7 @@ using UserManagement_System_Demo.Models;
 
 namespace UserManagement_System_Demo.APIControllers
 {
-    [Authorize]
+   
     [Route("api/[controller]")]
     [ApiController]
     
@@ -24,7 +24,7 @@ namespace UserManagement_System_Demo.APIControllers
             _db = db;
         }
 
-        //[AllowAnonymous]
+        [Authorize(UserRoles.Admin)]
         [HttpGet]
         [Route("GetAllOrders")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
@@ -82,9 +82,8 @@ namespace UserManagement_System_Demo.APIControllers
         }
 
 
-
+        [Authorize]
         [HttpGet]
-        // [Authorize]
         [Route("GetOrdersTest/{date?}")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrdersTest(string date)
         {
@@ -141,7 +140,7 @@ namespace UserManagement_System_Demo.APIControllers
         }
 
         //GET: api/Orders/5
-
+        [Authorize]
         [HttpGet]
         [Route("GetOrders/{amount?}")]
         public async Task<ActionResult<Order>> GetMyOrder(double amount)
@@ -198,7 +197,7 @@ namespace UserManagement_System_Demo.APIControllers
         }
 
 
-
+        [Authorize]
         [HttpGet]
         [Route("GetOrderById/{id}")]
         public async Task<ActionResult<Order>> GetOrderById(int id)
@@ -257,6 +256,7 @@ namespace UserManagement_System_Demo.APIControllers
         // PUT: api/Orders/5
         //  To protect from overposting attacks, 
         // see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut]
         [Route("OrderUpdate")]
         public async Task<IActionResult> PutOrder(int id, int? quantity,
@@ -305,7 +305,7 @@ namespace UserManagement_System_Demo.APIControllers
         }
 
 
-
+        [Authorize]
         [HttpPut]
         [Route("Remove")]
         public async Task<IActionResult> RemoveOrder(int id)
@@ -351,7 +351,8 @@ namespace UserManagement_System_Demo.APIControllers
         }
 
         //POST: api/Orders
-       // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(UserRoles.User)]
         [HttpPost]
         [Route("AddOrders")]
         public async Task<ActionResult<Order>> PostOrder(Order order)
@@ -363,6 +364,7 @@ namespace UserManagement_System_Demo.APIControllers
         }
 
         // DELETE: api/Orders/5
+        [Authorize(UserRoles.Admin)]
         [HttpDelete("{id}")]
         //[Route(OrderDelete)]
         public async Task<IActionResult> DeleteOrder(int id)

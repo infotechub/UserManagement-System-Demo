@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using UserManagement_System_Demo.Data;
 
 namespace UserManagement_System_Demo.Models
 {
@@ -9,9 +10,9 @@ namespace UserManagement_System_Demo.Models
         [Display(Name = "Product Name")]
         public string? ProductName { get; set; }
         [Required]
-        [StringLength(maximumLength: 50, MinimumLength = 30, 
-        ErrorMessage ="The {0} cannot be more than 50 and the {1} can not be less than 30")]
-        [Display(Name ="Product Description")]
+        [StringLength(maximumLength: 50, MinimumLength = 30,
+        ErrorMessage = "The {0} cannot be more than 50 and the {1} can not be less than 30")]
+        [Display(Name = "Product Description")]
         public string? ProductDescription { get; set; }
         [Required]
         [DataType(DataType.Currency)]
@@ -21,7 +22,9 @@ namespace UserManagement_System_Demo.Models
 
         [Required]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString ="{0:MM.DD.YYYY}")]
+        [DisplayFormat(DataFormatString = "{0:MM.DD.YYYY}")]
         public DateTime? ExpirationDate { get; set; }
     }
+
+
 }

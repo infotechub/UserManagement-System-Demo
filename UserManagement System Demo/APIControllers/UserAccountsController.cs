@@ -78,6 +78,11 @@ namespace UserManagement_System_Demo.APIControllers
                 return BadRequest("Some fields are empty. Kindly check the form fields and fill all compulsory fields");
             }
 
+            if (model.Password.Contains("Password") || model.Password.Contains(model.Email) || model.Password == "12345")
+            {
+                return BadRequest("Sorry, you are not allowedto use such characters for your password");
+            }
+
             var useraccount = await _userManager.FindByEmailAsync(model.Username);
             if (useraccount != null)
             {
@@ -107,7 +112,22 @@ namespace UserManagement_System_Demo.APIControllers
             };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
+                if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
+                    await _roleManager.CreateAsync(
+                        new IdentityRole(UserRoles.Admin));
+            if (!await _roleManager.RoleExistsAsync(UserRoles.User))
+                await _roleManager.CreateAsync(
+                    new IdentityRole(UserRoles.User));
+            if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
+            {
+                await _userManager.AddToRoleAsync(user, UserRoles.Admin);
+
+            }
+            if (!await _roleManager.RoleExistsAsync(UserRoles.User))
+            {
+                await _userManager.AddToRoleAsync(user, UserRoles.User);
+            }
+            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
 
@@ -153,10 +173,25 @@ namespace UserManagement_System_Demo.APIControllers
             };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
-               
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
-            return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
+                    await _roleManager.CreateAsync(
+                        new IdentityRole(UserRoles.Admin));
+                if (!await _roleManager.RoleExistsAsync(UserRoles.User))
+                await _roleManager.CreateAsync(
+                    new IdentityRole(UserRoles.User));
+                /*if(await _roleManager.RoleExistsAsync(UserRoles.Admin))
+                {
+                  await _userManager.AddToRoleAsync(user, UserRoles.User);
+               
+                }*/
+                if(await _roleManager.RoleExistsAsync(UserRoles.Admin))
+                {
+                await _userManager.AddToRoleAsync(user, UserRoles.Admin);
+                }
+             
+              return Ok(new Response { Status = "Success", Message = "User created successfully!" });
 
         }
 
