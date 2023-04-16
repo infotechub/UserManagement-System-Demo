@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UserManagement_System_Demo.Data;
@@ -24,7 +19,7 @@ namespace UserManagement_System_Demo.APIControllers
             _db = db;
         }
 
-        [Authorize(UserRoles.Admin)]
+        [Authorize]
         [HttpGet]
         [Route("GetAllOrders")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
